@@ -5,17 +5,19 @@ import com.teamtreehouse.core.BaseEntity;
 import com.teamtreehouse.room.Room;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
 public class Device extends BaseEntity {
     private String name;
     private Room room;
-    @OneToMany(mappedBy = "device", cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.MERGE)
     private List<Control> controls;
 
     protected Device() {
         super();
+        controls = new ArrayList<>();
     }
 
     public Device(String name, Room room, List<Control> controls) {

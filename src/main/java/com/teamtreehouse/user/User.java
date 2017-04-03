@@ -1,6 +1,7 @@
 package com.teamtreehouse.user;
 
 import com.teamtreehouse.core.BaseEntity;
+import com.teamtreehouse.room.Room;
 
 import javax.persistence.Entity;
 

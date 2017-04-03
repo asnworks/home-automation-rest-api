@@ -5,19 +5,22 @@ import com.teamtreehouse.device.Device;
 import com.teamtreehouse.user.User;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
 public class Room extends BaseEntity {
     private String name;
     private int area;
-    @OneToMany(mappedBy = "room", cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.MERGE)
     private List<Device> devices;
-    @OneToMany(mappedBy = "room", cascade = CascadeType.ALL)
+    @ManyToMany(cascade = CascadeType.MERGE)
     private List<User> administrators;
 
     protected Room() {
         super();
+        devices = new ArrayList<>();
+        administrators = new ArrayList<>();
     }
 
     public Room(String name, int area, List<Device> devices, List<User> administrators) {
