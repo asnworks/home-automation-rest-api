@@ -4,15 +4,17 @@ import com.teamtreehouse.core.BaseEntity;
 import com.teamtreehouse.device.Device;
 import com.teamtreehouse.user.User;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 
 @Entity
 public class Control extends BaseEntity {
     private String name;
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.MERGE)
     private Device device;
     private int value;
+    @ManyToOne(cascade = CascadeType.MERGE)
     private User lastModifiedBy;
 
     protected Control() {
