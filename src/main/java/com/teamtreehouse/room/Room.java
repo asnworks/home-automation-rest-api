@@ -1,5 +1,6 @@
 package com.teamtreehouse.room;
 
+import com.teamtreehouse.core.BaseEntity;
 import com.teamtreehouse.device.Device;
 import com.teamtreehouse.user.User;
 
@@ -7,10 +8,7 @@ import javax.persistence.*;
 import java.util.List;
 
 @Entity
-public class Room {
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private final Long id;
+public class Room extends BaseEntity {
     private String name;
     private int area;
     @OneToMany(mappedBy = "room", cascade = CascadeType.ALL)
@@ -19,7 +17,7 @@ public class Room {
     private List<User> administrators;
 
     protected Room() {
-        id = null;
+        super();
     }
 
     public Room(String name, int area, List<Device> devices, List<User> administrators) {

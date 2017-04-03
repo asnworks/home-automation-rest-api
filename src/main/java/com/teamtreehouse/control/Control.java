@@ -1,21 +1,26 @@
 package com.teamtreehouse.control;
 
+import com.teamtreehouse.core.BaseEntity;
 import com.teamtreehouse.device.Device;
 import com.teamtreehouse.user.User;
 
 import javax.persistence.Entity;
+import javax.persistence.ManyToOne;
 
 @Entity
-public class Control {
+public class Control extends BaseEntity {
     private String name;
+    @ManyToOne
     private Device device;
     private int value;
     private User lastModifiedBy;
 
     protected Control() {
+        super();
     }
 
     public Control(String name, Device device, int value, User lastModifiedBy) {
+        this();
         this.name = name;
         this.device = device;
         this.value = value;
