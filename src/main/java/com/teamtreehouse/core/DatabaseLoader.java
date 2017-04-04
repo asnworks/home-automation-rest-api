@@ -61,18 +61,19 @@ public class DatabaseLoader implements ApplicationRunner {
                     Room room = new Room(roomName, 1 + (int)(Math.random() * 1000));
                     roomList.add(room);
 
+                    String deviceName = String.format("Device %d", i + 1);
+                    Device device = new Device(deviceName);
+                    device.setRoom(roomList.get(i % roomList.size()));
+                    room.addDevice(device);
+                    deviceList.add(device);
+                    devices.save(deviceList);
+
                     String controlName = String.format("Control %d", i + 1);
                     Control control = new Control(controlName);
                     control.setDevice(deviceList.get(i % deviceList.size()));
                     controlList.add(control);
-
-                    String deviceName = String.format("Device %d", i + 1);
-                    Device device = new Device(deviceName);
-                    device.setRoom(roomList.get(i % roomList.size()));
-                    deviceList.add(device);
+                    controls.save(controlList);
                 });
-        controls.save(controlList);
-        devices.save(deviceList);
         rooms.save(roomList);
     }
 }
