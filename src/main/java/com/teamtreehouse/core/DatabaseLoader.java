@@ -1,7 +1,7 @@
 package com.teamtreehouse.core;
 
-import com.teamtreehouse.control.Control;
 import com.teamtreehouse.device.Device;
+import com.teamtreehouse.device.DeviceRepository;
 import com.teamtreehouse.room.Room;
 import com.teamtreehouse.room.RoomRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,10 +12,13 @@ import org.springframework.stereotype.Component;
 @Component
 public class DatabaseLoader implements ApplicationRunner {
     private final RoomRepository rooms;
+    private final DeviceRepository devices;
+
 
     @Autowired
-    public DatabaseLoader(RoomRepository rooms) {
+    public DatabaseLoader(RoomRepository rooms, DeviceRepository devices) {
         this.rooms = rooms;
+        this.devices = devices;
     }
 
     @Override
@@ -23,6 +26,7 @@ public class DatabaseLoader implements ApplicationRunner {
         Room room = new Room("Living Room", 51);
         Device device = new Device("LCD TV", room);
         room.addDevice(device);
+        devices.save(device);
         rooms.save(room);
     }
 }
