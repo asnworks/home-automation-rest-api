@@ -13,6 +13,12 @@ import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.IntStream;
+import java.util.stream.LongStream;
+
 @Component
 public class DatabaseLoader implements ApplicationRunner {
     private final RoomRepository rooms;
@@ -32,17 +38,58 @@ public class DatabaseLoader implements ApplicationRunner {
 
     @Override
     public void run(ApplicationArguments args) throws Exception {
-        Room room1 = new Room("Living Room", 251);
-        Device device1 = new Device("RGB LED Lights", room1);
+        List<Room> roomList = new ArrayList<>();
+        IntStream.range(0, 100)
+                .forEach(i -> {
+                    String name = String.format("Room %d", i + 1);
+                    Room r = new Room(name, 1 + (int)(Math.random() * 1000));
+                    roomList.add(r);
+                });
+        rooms.save(roomList);
+
+        List<Device> deviceList = new ArrayList<>();
+        IntStream.range(0, 100)
+                .forEach(i -> {
+                    String name = String.format("Device %d", i + 1);
+                    Device d = new Device(name);
+                    deviceList.add(d);
+                });
+        devices.save(deviceList);
+
+        List<Control> controlList = new ArrayList<>();
+        IntStream.range(0, 100)
+                .forEach(i -> {
+                    String name = String.format("Control %d", i + 1);
+                    Control c = new Control(name);
+                    controlList.add(c);
+                });
+        controls.save(controlList);
+
+        List<User> userList = Arrays.asList(
+                new User("Barbara Ann Minerva", new String[] {"ROLE_USER"}, "password"),
+                new User("Wade Wilson", new String[] {"ROLE_USER", "ROLE_ADMIN"}, "password"),
+                new User("Floyd Lawton", new String[] {"ROLE_USER"}, "password"),
+                new User("Barry Allen", new String[] {"ROLE_USER", "ROLE_ADMIN"}, "password"),
+                new User("Eobard Thawn", new String[] {"ROLE_USER", "ROLE_ADMIN"}, "password"),
+                new User("Thomas Wayne", new String[] {"ROLE_USER", "ROLE_ADMIN"}, "password"),
+                new User("Diana Prince", new String[] {"ROLE_USER", "ROLE_ADMIN"}, "password"),
+                new User("Donna Troy", new String[] {"ROLE_USER"}, "password"),
+                new User("Barbara Gordon", new String[] {"ROLE_USER", "ROLE_ADMIN"}, "password"),
+                new User("Steve Rogers", new String[] {"ROLE_USER", "ROLE_ADMIN"}, "password")
+        );
+        administrators.save(userList);
+
+        /*Room room1 = new Room("Living Room", 251);
+        Device device1 = new Device("RGB LED Lights");
         devices.save(device1);
         room1.addDevice(device1);
         User user1 = new User("Diana Prince", new String[] {"ROLE_USER", "ROLE_ADMIN"}, "password");
         administrators.save(user1);
         Control control1 = new Control("Power On", device1, 1, user1);
         controls.save(control1);
-        rooms.save(room1);
+        rooms.save(room1);*/
 
-        Room room2 = new Room("Dining Room", 234);
+        /*Room room2 = new Room("Dining Room", 234);
         Device device2 = new Device("Window Shades", room2);
         devices.save(device2);
         room2.addDevice(device2);
@@ -80,6 +127,6 @@ public class DatabaseLoader implements ApplicationRunner {
         administrators.save(user5);
         Control control5 = new Control("Power Off", device5, 1, user5);
         controls.save(control5);
-        rooms.save(room5);
+        rooms.save(room5);*/
     }
 }

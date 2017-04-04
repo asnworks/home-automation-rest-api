@@ -21,12 +21,9 @@ public class Control extends BaseEntity {
         super();
     }
 
-    public Control(String name, Device device, int value, User lastModifiedBy) {
+    public Control(String name) {
         this();
         this.name = name;
-        this.device = device;
-        this.value = value;
-        this.lastModifiedBy = lastModifiedBy;
     }
 
     public String getName() {
