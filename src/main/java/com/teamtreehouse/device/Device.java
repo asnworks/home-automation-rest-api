@@ -11,8 +11,7 @@ import java.util.List;
 @Entity
 public class Device extends BaseEntity {
     private String name;
-    @ManyToOne(cascade = CascadeType.MERGE)
-    @JoinColumn(name = "room")
+    @ManyToOne(cascade = CascadeType.ALL)
     private Room room;
     @OneToMany(cascade = CascadeType.MERGE)
     private List<Control> controls;

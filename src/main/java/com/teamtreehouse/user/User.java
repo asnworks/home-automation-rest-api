@@ -1,14 +1,16 @@
 package com.teamtreehouse.user;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.teamtreehouse.core.BaseEntity;
-import com.teamtreehouse.room.Room;
 
 import javax.persistence.Entity;
 
 @Entity
 public class User extends BaseEntity {
     private String name;
+    @JsonIgnore
     private String[] roles;
+    @JsonIgnore
     private String password;
 
     protected User() {
@@ -19,7 +21,7 @@ public class User extends BaseEntity {
         this();
         this.name = name;
         this.roles = roles;
-        this.password = password;
+//        setPassword(password);
     }
 
     public String getName() {
@@ -40,9 +42,5 @@ public class User extends BaseEntity {
 
     public String getPassword() {
         return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
     }
 }
