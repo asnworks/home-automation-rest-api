@@ -21,11 +21,10 @@ public class Device extends BaseEntity {
         controls = new ArrayList<>();
     }
 
-    public Device(String name, Room room, List<Control> controls) {
+    public Device(String name, Room room) {
         this();
         this.name = name;
         this.room = room;
-        this.controls = controls;
     }
 
     public void addControl(Control control) {

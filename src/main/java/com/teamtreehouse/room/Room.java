@@ -23,12 +23,10 @@ public class Room extends BaseEntity {
         administrators = new ArrayList<>();
     }
 
-    public Room(String name, int area, List<Device> devices, List<User> administrators) {
+    public Room(String name, int area) {
         this();
         this.name = name;
         this.area = area;
-        this.devices = devices;
-        this.administrators = administrators;
     }
 
     public void addDevice(Device device) {
