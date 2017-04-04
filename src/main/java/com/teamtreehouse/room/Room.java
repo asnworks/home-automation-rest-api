@@ -12,7 +12,7 @@ import java.util.List;
 public class Room extends BaseEntity {
     private String name;
     private int area;
-    @OneToMany(cascade = CascadeType.MERGE)
+    @OneToMany(mappedBy = "room", cascade = CascadeType.ALL)
     private List<Device> devices;
     @ManyToMany(cascade = CascadeType.MERGE)
     private List<User> administrators;

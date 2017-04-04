@@ -14,7 +14,6 @@ public class DatabaseLoader implements ApplicationRunner {
     private final RoomRepository rooms;
     private final DeviceRepository devices;
 
-
     @Autowired
     public DatabaseLoader(RoomRepository rooms, DeviceRepository devices) {
         this.rooms = rooms;
@@ -25,8 +24,8 @@ public class DatabaseLoader implements ApplicationRunner {
     public void run(ApplicationArguments args) throws Exception {
         Room room = new Room("Living Room", 51);
         Device device = new Device("LCD TV", room);
-        room.addDevice(device);
         devices.save(device);
+        room.addDevice(device);
         rooms.save(room);
     }
 }
