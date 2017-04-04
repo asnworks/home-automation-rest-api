@@ -28,6 +28,11 @@ public class Device extends BaseEntity {
         this.controls = controls;
     }
 
+    public void addControl(Control control) {
+        control.setDevice(this);
+        controls.add(control);
+    }
+
     public String getName() {
         return name;
     }
