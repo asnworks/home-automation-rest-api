@@ -13,7 +13,7 @@ public class Device extends BaseEntity {
     private String name;
     @ManyToOne(cascade = CascadeType.ALL)
     private Room room;
-    @OneToMany(cascade = CascadeType.MERGE)
+    @OneToMany(cascade = CascadeType.ALL)
     private List<Control> controls;
 
     protected Device() {
@@ -49,9 +49,5 @@ public class Device extends BaseEntity {
 
     public List<Control> getControls() {
         return controls;
-    }
-
-    public void setControls(List<Control> controls) {
-        this.controls = controls;
     }
 }

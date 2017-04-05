@@ -54,10 +54,6 @@ public class Room extends BaseEntity {
         return devices;
     }
 
-    public void setDevices(List<Device> devices) {
-        this.devices = devices;
-    }
-
     public List<User> getAdministrators() {
         return administrators;
     }
