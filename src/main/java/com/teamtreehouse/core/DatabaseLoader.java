@@ -70,6 +70,7 @@ public class DatabaseLoader implements ApplicationRunner {
                     device.addControl(control);
                     room.addDevice(device);
                     devices.save(deviceList);
+                    room.setAdministrators(userList);
                     roomList.add(room);
                 });
         rooms.save(roomList);
