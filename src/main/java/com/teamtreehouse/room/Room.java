@@ -5,12 +5,17 @@ import com.teamtreehouse.device.Device;
 import com.teamtreehouse.user.User;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
 public class Room extends BaseEntity {
+    @NotNull
     private String name;
+    @NotNull
+    @Size(min = 1, max = 1000)
     private int area;
     @OneToMany(mappedBy = "room", cascade = CascadeType.ALL)
     private List<Device> devices;

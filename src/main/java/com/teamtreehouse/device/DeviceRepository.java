@@ -9,5 +9,5 @@ import org.springframework.data.rest.core.annotation.RestResource;
 public interface DeviceRepository extends PagingAndSortingRepository<Device, Long> {
 
     @RestResource(rel = "device-name", path = "deviceName")
-    Page<Device> findDeviceByNameLike(@Param("name") String name, Pageable page);
+    Page<Device> findByNameLike(@Param("name") String name, Pageable page);
 }

@@ -4,9 +4,11 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.teamtreehouse.core.BaseEntity;
 
 import javax.persistence.Entity;
+import javax.validation.constraints.NotNull;
 
 @Entity
 public class User extends BaseEntity {
+    @NotNull
     private String name;
     @JsonIgnore
     private String[] roles;
