@@ -70,7 +70,10 @@ public class DatabaseLoader implements ApplicationRunner {
                     device.addControl(control);
                     room.addDevice(device);
                     devices.save(deviceList);
-                    room.setAdministrators(userList);
+                    int index = (int)(Math.random() * userList.size());
+                    List<User> users = new ArrayList<>();
+                    users.add(userList.get(index));
+                    room.setAdministrators(users);
                     roomList.add(room);
                 });
         rooms.save(roomList);

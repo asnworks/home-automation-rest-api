@@ -1,6 +1,6 @@
 package com.teamtreehouse.room;
 
-import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.repository.PagingAndSortingRepository;
 
-public interface RoomRepository extends CrudRepository<Room, Long> {
+public interface RoomRepository extends PagingAndSortingRepository<Room, Long> {
 }
