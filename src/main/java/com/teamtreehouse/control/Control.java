@@ -7,9 +7,11 @@ import com.teamtreehouse.user.User;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
+import javax.validation.constraints.NotNull;
 
 @Entity
 public class Control extends BaseEntity {
+    @NotNull
     private String name;
     @ManyToOne(cascade = CascadeType.MERGE)
     private Device device;

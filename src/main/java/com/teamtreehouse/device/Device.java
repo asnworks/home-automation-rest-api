@@ -5,11 +5,13 @@ import com.teamtreehouse.core.BaseEntity;
 import com.teamtreehouse.room.Room;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
 public class Device extends BaseEntity {
+    @NotNull
     private String name;
     @ManyToOne(cascade = CascadeType.ALL)
     private Room room;

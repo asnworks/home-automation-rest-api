@@ -2,11 +2,16 @@ package com.teamtreehouse.user;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.teamtreehouse.core.BaseEntity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import javax.persistence.Entity;
+import javax.validation.constraints.NotNull;
 
 @Entity
 public class User extends BaseEntity {
+    public static final PasswordEncoder PASSWORD_ENCODER = new BCryptPasswordEncoder();
+    @NotNull
     private String name;
     @JsonIgnore
     private String[] roles;
@@ -21,7 +26,11 @@ public class User extends BaseEntity {
         this();
         this.name = name;
         this.roles = roles;
-//        setPassword(password);
+        setPassword(password);
+    }
+
+    public void setPassword(String password) {
+        this.password = PASSWORD_ENCODER.encode(password);
     }
 
     public String getName() {

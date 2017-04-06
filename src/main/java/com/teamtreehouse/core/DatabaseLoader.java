@@ -23,15 +23,15 @@ public class DatabaseLoader implements ApplicationRunner {
     private final RoomRepository rooms;
     private final DeviceRepository devices;
     private final ControlRepository controls;
-    private final UserRepository administrators;
+    private final UserRepository users;
 
     @Autowired
     public DatabaseLoader(RoomRepository rooms, DeviceRepository devices,
-                          ControlRepository controls, UserRepository administrators) {
+                          ControlRepository controls, UserRepository users) {
         this.rooms = rooms;
         this.devices = devices;
         this.controls = controls;
-        this.administrators = administrators;
+        this.users = users;
 
     }
 
@@ -39,17 +39,17 @@ public class DatabaseLoader implements ApplicationRunner {
     public void run(ApplicationArguments args) throws Exception {
         List<User> userList = Arrays.asList(
                 new User("Barbara Ann Minerva", new String[] {"ROLE_USER"}, "password"),
-                new User("Wade Wilson", new String[] {"ROLE_USER", "ROLE_ADMIN"}, "password"),
+                new User("Wade Wilson", new String[] {"ROLE_USER"}, "password"),
                 new User("Floyd Lawton", new String[] {"ROLE_USER"}, "password"),
                 new User("Barry Allen", new String[] {"ROLE_USER", "ROLE_ADMIN"}, "password"),
-                new User("Eobard Thawn", new String[] {"ROLE_USER", "ROLE_ADMIN"}, "password"),
-                new User("Thomas Wayne", new String[] {"ROLE_USER", "ROLE_ADMIN"}, "password"),
+                new User("Eobard Thawn", new String[] {"ROLE_USER"}, "password"),
+                new User("Thomas Wayne", new String[] {"ROLE_USER"}, "password"),
                 new User("Diana Prince", new String[] {"ROLE_USER", "ROLE_ADMIN"}, "password"),
                 new User("Donna Troy", new String[] {"ROLE_USER"}, "password"),
                 new User("Barbara Gordon", new String[] {"ROLE_USER", "ROLE_ADMIN"}, "password"),
-                new User("Steve Rogers", new String[] {"ROLE_USER", "ROLE_ADMIN"}, "password")
+                new User("Steve Rogers", new String[] {"ROLE_USER"}, "password")
         );
-        administrators.save(userList);
+        users.save(userList);
 
         List<Room> roomList = new ArrayList<>();
         List<Control> controlList = new ArrayList<>();
@@ -71,9 +71,9 @@ public class DatabaseLoader implements ApplicationRunner {
                     room.addDevice(device);
                     devices.save(deviceList);
                     int index = (int)(Math.random() * userList.size());
-                    List<User> users = new ArrayList<>();
-                    users.add(userList.get(index));
-                    room.setAdministrators(users);
+                    List<User> tempUsers = new ArrayList<>();
+                    tempUsers.add(userList.get(index));
+                    room.setAdministrators(tempUsers);
                     roomList.add(room);
                 });
         rooms.save(roomList);
