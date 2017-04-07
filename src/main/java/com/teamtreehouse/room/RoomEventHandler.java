@@ -27,7 +27,7 @@ public class RoomEventHandler {
         if (user.hasAdminRole()) {
             room.addAdministrator(user);
         } else {
-            throw new AccessDeniedException("Access Denied - user must be an administrator in order to create rooms");
+            throw new AccessDeniedException("Access Denied - user must have the ROLE_ADMIN role in order to create rooms");
         }
     }
 
@@ -35,10 +35,10 @@ public class RoomEventHandler {
     public void addDeviceBasedOnLoggedInUser(Room room, Device device) {
         String name = SecurityContextHolder.getContext().getAuthentication().getName();
         User user = users.findByName(name);
-        if (user.hasAdminRole()) {
+        if (room.getAdministrators().contains(user)) {
             room.addDevice(device);
         } else {
-            throw new AccessDeniedException("Access Denied - user must be an administrator in order to create devices");
+            throw new AccessDeniedException("Access Denied - user must be a room administrator in order to create devices");
         }
     }
 }

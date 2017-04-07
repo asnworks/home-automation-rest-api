@@ -1,5 +1,6 @@
 package com.teamtreehouse.control;
 
+import com.teamtreehouse.room.Room;
 import com.teamtreehouse.user.User;
 import com.teamtreehouse.user.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,13 +22,13 @@ public class ControlEventHandler {
     }
 
     @HandleBeforeSave
-    public void saveControlBasedOnLoggedInUser(Control control) {
+    public void saveControlBasedOnLoggedInUser(Control control, Room room) {
         String name = SecurityContextHolder.getContext().getAuthentication().getName();
         User user = users.findByName(name);
-        if (user.hasAdminRole()) {
+        if (room.getAdministrators().contains(user)) {
             controls.save(control);
         } else {
-            throw new AccessDeniedException("Access Denied - user must be an administrator in order to modify controls");
+            throw new AccessDeniedException("Access Denied - user must be a room administrator in order to modify controls");
         }
     }
 
@@ -36,5 +37,16 @@ public class ControlEventHandler {
         String name = SecurityContextHolder.getContext().getAuthentication().getName();
         User user = users.findByName(name);
         control.setLastModifiedBy(user);
+    }
+
+    @HandleBeforeDelete
+    public void deleteControlBasedOnLoggedInUser(Control control, Room room) {
+        String name = SecurityContextHolder.getContext().getAuthentication().getName();
+        User user = users.findByName(name);
+        if (room.getAdministrators().contains(user)) {
+            controls.delete(control);
+        } else {
+            throw new AccessDeniedException("Access Denied - user must be a room administrator in order to delete controls");
+        }
     }
 }
