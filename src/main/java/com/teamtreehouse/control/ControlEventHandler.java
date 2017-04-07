@@ -9,7 +9,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
 @Component
-@RepositoryEventHandler(User.class)
+@RepositoryEventHandler(Control.class)
 public class ControlEventHandler {
     private final UserRepository users;
 
