@@ -1,6 +1,5 @@
 package com.teamtreehouse.control;
 
-import com.teamtreehouse.room.Room;
 import com.teamtreehouse.user.User;
 import com.teamtreehouse.user.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,21 +12,26 @@ import org.springframework.stereotype.Component;
 @RepositoryEventHandler(User.class)
 public class ControlEventHandler {
     private final UserRepository users;
-    private final ControlRepository controls;
 
     @Autowired
-    public ControlEventHandler(UserRepository users, ControlRepository controls) {
+    public ControlEventHandler(UserRepository users) {
         this.users = users;
-        this.controls = controls;
+    }
+
+    @HandleBeforeCreate
+    public void addControlBasedOnLoggedInUser(Control control) {
+        String name = SecurityContextHolder.getContext().getAuthentication().getName();
+        User user = users.findByName(name);
+        if (!control.getDevice().getRoom().getAdministrators().contains(user)) {
+            throw new AccessDeniedException("Access Denied - user must be a room administrator in order to create controls");
+        }
     }
 
     @HandleBeforeSave
-    public void saveControlBasedOnLoggedInUser(Control control, Room room) {
+    public void saveControlBasedOnLoggedInUser(Control control) {
         String name = SecurityContextHolder.getContext().getAuthentication().getName();
         User user = users.findByName(name);
-        if (room.getAdministrators().contains(user)) {
-            controls.save(control);
-        } else {
+        if (!control.getDevice().getRoom().getAdministrators().contains(user)) {
             throw new AccessDeniedException("Access Denied - user must be a room administrator in order to modify controls");
         }
     }
@@ -40,12 +44,10 @@ public class ControlEventHandler {
     }
 
     @HandleBeforeDelete
-    public void deleteControlBasedOnLoggedInUser(Control control, Room room) {
+    public void deleteControlBasedOnLoggedInUser(Control control) {
         String name = SecurityContextHolder.getContext().getAuthentication().getName();
         User user = users.findByName(name);
-        if (room.getAdministrators().contains(user)) {
-            controls.delete(control);
-        } else {
+        if (!control.getDevice().getRoom().getAdministrators().contains(user)) {
             throw new AccessDeniedException("Access Denied - user must be a room administrator in order to delete controls");
         }
     }

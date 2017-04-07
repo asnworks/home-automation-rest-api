@@ -1,7 +1,5 @@
 package com.teamtreehouse.device;
 
-import com.teamtreehouse.control.Control;
-import com.teamtreehouse.room.Room;
 import com.teamtreehouse.user.User;
 import com.teamtreehouse.user.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,43 +15,35 @@ import org.springframework.stereotype.Component;
 @RepositoryEventHandler(Device.class)
 public class DeviceEventHandler {
     private final UserRepository users;
-    private final DeviceRepository devices;
 
     @Autowired
-    public DeviceEventHandler(UserRepository users, DeviceRepository devices) {
+    public DeviceEventHandler(UserRepository users) {
         this.users = users;
-        this.devices = devices;
     }
 
     @HandleBeforeCreate
-    public void addControlBasedOnLoggedInUser(Device device, Control control, Room room) {
+    public void addDeviceBasedOnLoggedInUser(Device device) {
         String name = SecurityContextHolder.getContext().getAuthentication().getName();
         User user = users.findByName(name);
-        if (room.getAdministrators().contains(user)) {
-            device.addControl(control);
-        } else {
+        if (!device.getRoom().getAdministrators().contains(user)) {
             throw new AccessDeniedException("Access Denied - user must be a room administrator in order to create controls");
         }
     }
 
     @HandleBeforeSave
-    public void saveDeviceBasedOnLoggedInUser(Device device, Room room) {
+    public void saveDeviceBasedOnLoggedInUser(Device device) {
         String name = SecurityContextHolder.getContext().getAuthentication().getName();
         User user = users.findByName(name);
-        if (room.getAdministrators().contains(user)) {
-            devices.save(device);
-        } else {
+        if (!device.getRoom().getAdministrators().contains(user)) {
             throw new AccessDeniedException("Access Denied - user must be a room administrator in order to modify devices");
         }
     }
 
     @HandleBeforeDelete
-    public void deleteDeviceBasedOnLoggedInUser(Device device, Room room) {
+    public void deleteDeviceBasedOnLoggedInUser(Device device) {
         String name = SecurityContextHolder.getContext().getAuthentication().getName();
         User user = users.findByName(name);
-        if (room.getAdministrators().contains(user)) {
-            devices.delete(device);
-        } else {
+        if (!device.getRoom().getAdministrators().contains(user)) {
             throw new AccessDeniedException("Access Denied - user must be a room administrator in order to delete devices");
         }
     }
