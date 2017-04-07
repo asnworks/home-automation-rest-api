@@ -3,8 +3,8 @@ package com.teamtreehouse.control;
 import com.teamtreehouse.user.User;
 import com.teamtreehouse.user.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.rest.core.annotation.HandleAfterSave;
-import org.springframework.data.rest.core.annotation.RepositoryEventHandler;
+import org.springframework.data.rest.core.annotation.*;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
@@ -12,10 +12,23 @@ import org.springframework.stereotype.Component;
 @RepositoryEventHandler(User.class)
 public class ControlEventHandler {
     private final UserRepository users;
+    private final ControlRepository controls;
 
     @Autowired
-    public ControlEventHandler(UserRepository users) {
+    public ControlEventHandler(UserRepository users, ControlRepository controls) {
         this.users = users;
+        this.controls = controls;
+    }
+
+    @HandleBeforeSave
+    public void saveControlBasedOnLoggedInUser(Control control) {
+        String name = SecurityContextHolder.getContext().getAuthentication().getName();
+        User user = users.findByName(name);
+        if (user.hasAdminRole()) {
+            controls.save(control);
+        } else {
+            throw new AccessDeniedException("Access Denied - user must be an administrator in order to modify controls");
+        }
     }
 
     @HandleAfterSave

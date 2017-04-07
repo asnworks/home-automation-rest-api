@@ -1,44 +1,47 @@
-package com.teamtreehouse.room;
+package com.teamtreehouse.device;
 
-import com.teamtreehouse.device.Device;
+import com.teamtreehouse.control.Control;
 import com.teamtreehouse.user.User;
 import com.teamtreehouse.user.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.rest.core.annotation.HandleBeforeCreate;
+import org.springframework.data.rest.core.annotation.HandleBeforeSave;
 import org.springframework.data.rest.core.annotation.RepositoryEventHandler;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
 @Component
-@RepositoryEventHandler(Room.class)
-public class RoomEventHandler {
+@RepositoryEventHandler(Device.class)
+public class DeviceEventHandler {
     private final UserRepository users;
+    private final DeviceRepository devices;
 
     @Autowired
-    public RoomEventHandler(UserRepository users) {
+    public DeviceEventHandler(UserRepository users, DeviceRepository devices) {
         this.users = users;
+        this.devices = devices;
     }
 
     @HandleBeforeCreate
-    public void addRoomBasedOnLoggedInUser(Room room) {
+    public void addControlBasedOnLoggedInUser(Device device, Control control) {
         String name = SecurityContextHolder.getContext().getAuthentication().getName();
         User user = users.findByName(name);
         if (user.hasAdminRole()) {
-            room.addAdministrator(user);
+            device.addControl(control);
         } else {
-            throw new AccessDeniedException("Access Denied - user must be an administrator in order to create rooms");
+            throw new AccessDeniedException("Access Denied - user must be an administrator in order to create controls");
         }
     }
 
-    @HandleBeforeCreate
-    public void addDeviceBasedOnLoggedInUser(Room room, Device device) {
+    @HandleBeforeSave
+    public void saveDeviceBasedOnLoggedInUser(Device device) {
         String name = SecurityContextHolder.getContext().getAuthentication().getName();
         User user = users.findByName(name);
         if (user.hasAdminRole()) {
-            room.addDevice(device);
+            devices.save(device);
         } else {
-            throw new AccessDeniedException("Access Denied - user must be an administrator in order to create devices");
+            throw new AccessDeniedException("Access Denied - user must be an administrator in order to modify devices");
         }
     }
 }
