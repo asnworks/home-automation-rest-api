@@ -7,6 +7,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 import javax.persistence.Entity;
 import javax.validation.constraints.NotNull;
+import java.util.Arrays;
+import java.util.List;
 
 @Entity
 public class User extends BaseEntity {
@@ -51,5 +53,10 @@ public class User extends BaseEntity {
 
     public String getPassword() {
         return password;
+    }
+
+    public boolean hasAdminRole() {
+        List<String> roles = Arrays.asList(getRoles());
+        return roles.contains("ROLE_ADMIN");
     }
 }
