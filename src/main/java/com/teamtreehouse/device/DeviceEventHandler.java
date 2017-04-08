@@ -1,5 +1,6 @@
 package com.teamtreehouse.device;
 
+import com.teamtreehouse.room.Room;
 import com.teamtreehouse.user.User;
 import com.teamtreehouse.user.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,10 +23,10 @@ public class DeviceEventHandler {
     }
 
     @HandleBeforeCreate
-    public void addDeviceBasedOnLoggedInUser(Device device) {
+    public void addDeviceBasedOnLoggedInUser(Room room) {
         String name = SecurityContextHolder.getContext().getAuthentication().getName();
         User user = users.findByName(name);
-        if (!device.getRoom().getAdministrators().contains(user)) {
+        if (!room.getAdministrators().contains(user)) {
             throw new AccessDeniedException("Access Denied - user must be a room administrator in order to create controls");
         }
     }

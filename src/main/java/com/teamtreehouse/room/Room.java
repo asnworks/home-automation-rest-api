@@ -39,8 +39,8 @@ public class Room extends BaseEntity {
         devices.add(device);
     }
 
-    public void addAdministrator(User user) {
-        administrators.add(user);
+    public void addAdministrator(User administrator) {
+        administrators.add(administrator);
     }
 
     public String getName() {

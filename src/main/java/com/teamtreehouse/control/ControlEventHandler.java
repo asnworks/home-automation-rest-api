@@ -1,5 +1,6 @@
 package com.teamtreehouse.control;
 
+import com.teamtreehouse.room.Room;
 import com.teamtreehouse.user.User;
 import com.teamtreehouse.user.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,10 +20,10 @@ public class ControlEventHandler {
     }
 
     @HandleBeforeCreate
-    public void addControlBasedOnLoggedInUser(Control control) {
+    public void addControlBasedOnLoggedInUser(Room room) {
         String name = SecurityContextHolder.getContext().getAuthentication().getName();
         User user = users.findByName(name);
-        if (!control.getDevice().getRoom().getAdministrators().contains(user)) {
+        if (!room.getAdministrators().contains(user)) {
             throw new AccessDeniedException("Access Denied - user must be a room administrator in order to create controls");
         }
     }
