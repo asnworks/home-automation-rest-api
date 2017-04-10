@@ -70,4 +70,9 @@ public class Room extends BaseEntity {
     public void setAdministrators(List<User> administrators) {
         this.administrators = administrators;
     }
+
+    public boolean hasAdministrator(Object object) {
+        User administrator = (User) object;
+        return administrators.contains(administrator);
+    }
 }
